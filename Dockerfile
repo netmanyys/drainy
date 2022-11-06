@@ -6,7 +6,7 @@ RUN mkdir -p /app
 WORKDIR /app
 # Installing python dependencies
 COPY requirements.txt /app
-RUN pip install — no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 # Copying src code to Container
 COPY . /app/
 # Application Environment variables
