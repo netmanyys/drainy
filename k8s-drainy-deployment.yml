@@ -19,7 +19,7 @@ spec:
         app: drainy
     spec:
       containers:
-      - image: yunshengyan/drainy
+      - image: yunshengyan/drainy:drainy
         imagePullPolicy: IfNotPresent
         name: leader
         resources:
