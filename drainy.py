@@ -50,7 +50,7 @@ def drain_node(session, node_name):
 
 
 def drain_high_cpu_node(session):
-    config.load_kube_config()
+    config.load_incluster_config()
 
     api = client.CustomObjectsApi()
     k8s_nodes = api.list_cluster_custom_object("metrics.k8s.io", "v1beta1", "nodes")
