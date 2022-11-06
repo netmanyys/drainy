@@ -5,7 +5,7 @@ metadata:
   generation: 1
   labels:
     app: drainy
-  name: drainy=
+  name: drainy
   namespace: kube-system
 spec:
   replicas: 1
