@@ -1,1 +1,1 @@
-kubernetes==25.0.0-snapshot
+kubernetes==25.2.0a1
