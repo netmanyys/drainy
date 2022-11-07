@@ -18,6 +18,8 @@ sudo docker push yunshengyan/drainy:$version-id
 ```
 
 ### Deploy drainy
-- kubectl apply -f drainy-rbac.yml
-- kubectl apply -f drainy-deployment.yml
-- kubectl -n kube-system get pods | grep drainy
+```
+kubectl apply -f drainy-rbac.yml
+kubectl apply -f drainy-deployment.yml
+kubectl -n kube-system get pods | grep drainy
+```
