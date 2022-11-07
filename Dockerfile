@@ -18,4 +18,4 @@ COPY . /app/
 # Setting Persistent data
 # VOLUME [“/app-data”]
 # Running Python Application
-CMD ["python", "/app/drainy.py"]
+CMD ["python", "/app/main.py"]

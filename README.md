@@ -12,7 +12,7 @@ kubectl top pods
 ### How to build the docker image
 ```
 sudo echo 'y' | sudo docker system prune -a
-version_id=0.91
+version_id=0.92
 sudo docker build -t yunshengyan/drainy:$version_id .
 sudo docker push yunshengyan/drainy:$version_id
 ```

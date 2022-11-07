@@ -22,7 +22,7 @@ spec:
       nodeSelector:
         node-role.kubernetes.io/master: ""
       containers:
-      - image: yunshengyan/drainy:0.91
+      - image: yunshengyan/drainy:0.92
         imagePullPolicy: IfNotPresent
         name: leader
         resources:

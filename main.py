@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from kubernetes import client, config
 from datetime import datetime
-
+import threading
 import time
 
 def time_now():
@@ -76,6 +76,13 @@ class Drainy:
             return True
         else:
             return False
+    def ttl_key_remove(self, key, ttl):
+        try:
+            time.sleep(ttl)
+            if key in self.drained:
+                self.drained.pop(key)
+        except Exception as e:
+            print("{} Exception: Drainy:ttl_key_remove {}".format(time_now(), e))            
 
     def drain_high_cpu_node(self):
         try:
@@ -91,6 +98,10 @@ class Drainy:
                     if not self.is_drained(node_name):
                         # will only drain a node if it has not been drained
                         self.drained[node_name] = True
+                        # After 10min(600 sec), remove node_name from self.drained dict
+                        # This can avoid frequent drain to one particular node in 10 mins
+                        t = threading.Thread(target=self.ttl_key_remove, args=(node_name, 600))
+                        t.start()
                         self.drain_node(node_name)
 
         except Exception as e:
