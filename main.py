@@ -37,6 +37,12 @@ class Drainy:
 
     def show_node(self, node_name):
         return self.session.read_node_status(node_name)
+    
+    def is_cp_node(self, node_name):
+        if 'node-role.kubernetes.io/master' in self.session.read_node_status(node_name).metadata.labels:
+            return True
+        else:
+            return False
 
     def delete_pod(self, name, namespace):
         try:
@@ -109,7 +115,9 @@ class Drainy:
                 node_name = stats['metadata']['name']
                 core_num = self.node_cpu_capacity(node_name)
                 cpu_usage = float(stats['usage']['cpu'][:-1]) / (1000000000.0 * core_num) * 100
-                if cpu_usage > CPU_THRESHOLD:
+
+                # If this is a worker node which CPU usage higher than the threshold then drain it
+                if cpu_usage > CPU_THRESHOLD and not self.is_cp_node(node_name):
                     print("{} {} cpu usage is way too high!".format(time_now(), node_name))
                     if not self.is_drained(node_name):
                         # will only drain a node if it has not been drained
