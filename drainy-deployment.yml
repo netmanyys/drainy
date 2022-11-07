@@ -20,7 +20,7 @@ spec:
     spec:
       serviceAccountName: drainy-sa
       nodeSelector:
-        node-role.kubernetes.io/master
+        node-role.kubernetes.io/master: ""
       containers:
       - image: yunshengyan/drainy:0.91
         imagePullPolicy: IfNotPresent
