@@ -14,6 +14,7 @@ class Drainy:
     def __init__(self):
         config.load_incluster_config()
         self.session = client.CoreV1Api() 
+        self.drained = dict()
     
     def node_cpu_capacity(self, node_name):
         return int(self.session.read_node_status(node_name).status.capacity['cpu'])
@@ -70,6 +71,12 @@ class Drainy:
         except Exception as e:
             print("{} Exception: Drainy:drain_node {}".format(time_now(),e))       
 
+    def is_drained(self, node):
+        if node in self.drained and self.drained[node]:
+            return True
+        else:
+            return False
+
     def drain_high_cpu_node(self):
         try:
             api = client.CustomObjectsApi()
@@ -80,19 +87,24 @@ class Drainy:
                 core_num = self.node_cpu_capacity(node_name)
                 cpu_usage = float(stats['usage']['cpu'][:-1]) / (1000000000.0 * core_num) * 100
                 if cpu_usage > 80:
-                    print("{} {} cpu usage is way too high!".format(time_now(), stats['metadata']['name']))
-                    self.drain_node(node_name)
+                    print("{} {} cpu usage is way too high!".format(time_now(), node_name))
+                    if not self.is_drained(node_name):
+                        # will only drain a node if it has not been drained
+                        self.drained[node_name] = True
+                        self.drain_node(node_name)
+
         except Exception as e:
             print("{} Exception: Drainy:drain_high_cpu_node {}".format(time_now(), e))
 
 def main():
     try:
         d = Drainy()
-        d.drain_high_cpu_node()
+        while True:
+            d.drain_high_cpu_node()
+            time.sleep(60)
     except Exception as e:
         print("{} Exception: main {}".format(time_now(), e))
     
 if __name__ == '__main__':
-    while True:
-        main()
-        time.sleep(60)
+    main()
+
