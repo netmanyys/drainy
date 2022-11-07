@@ -10,10 +10,12 @@ kubectl top pods
 ```
 
 ### How to build the docker image
-- sudo docker system prune -a # type y
-- sudo docker build -t yunshengyan/drainy:<version> .
-- sudo docker push yunshengyan/drainy:<version>
-
+```
+sudo docker system prune -a # type y
+version-id=0.7
+sudo docker build -t yunshengyan/drainy:$version-id .
+sudo docker push yunshengyan/drainy:$version-id
+```
 
 ### Deploy drainy
 - kubectl apply -f drainy-rbac.yml
