@@ -18,6 +18,7 @@ spec:
       labels:
         app: drainy
     spec:
+      serviceAccountName: drainy-sa
       containers:
       - image: yunshengyan/drainy:0.4
         imagePullPolicy: IfNotPresent
