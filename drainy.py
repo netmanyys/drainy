@@ -74,11 +74,11 @@ class Drainy:
             for stats in k8s_nodes['items']:
                 # print("Node Name: %s\tCPU: %f\tMemory: %s" % (stats['metadata']['name'], float(stats['usage']['cpu'][:-1]) / (1000000000.0 * core_num) * 100, stats['usage']['memory']))
                 node_name = stats['metadata']['name']
-                core_num = self.node_cpu_capacity(self.session, node_name)
+                core_num = self.node_cpu_capacity(node_name)
                 cpu_usage = float(stats['usage']['cpu'][:-1]) / (1000000000.0 * core_num) * 100
                 if cpu_usage > 80:
                     print("{} cpu usage is way too high!".format(stats['metadata']['name']))
-                    self.drain_node(self.session, node_name)
+                    self.drain_node(node_name)
         except Exception as e:
             print("Exception: Drainy:drain_high_cpu_node {}".format(e))
 

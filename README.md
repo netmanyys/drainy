@@ -1,4 +1,4 @@
-##  This repo is to build a cloud native solution for auto drain nodes in kubernetes clusters
+Drainy is a cloud native solution for auto drain nodes in kubernetes clusters
 ## Dependency kubernetes metric-server
 ```
 git clone https://github.com/kodekloudhub/kubernetes-metrics-server.git
