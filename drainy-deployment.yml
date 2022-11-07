@@ -20,7 +20,7 @@ spec:
     spec:
       serviceAccountName: drainy-sa
       containers:
-      - image: yunshengyan/drainy:0.5
+      - image: yunshengyan/drainy:0.6
         imagePullPolicy: IfNotPresent
         name: leader
         resources:
