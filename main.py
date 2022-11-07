@@ -1,8 +1,24 @@
+#    Copyright [netmanyys / Yunsheng Yan] 
+
+#    Licensed under the Apache License, Version 2.0 (the "License");
+#    you may not use this file except in compliance with the License.
+#    You may obtain a copy of the License at
+
+#        http://www.apache.org/licenses/LICENSE-2.0
+
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS,
+#    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#    See the License for the specific language governing permissions and
+#    limitations under the License.
+
 #!/usr/bin/env python
+
 from kubernetes import client, config
 from datetime import datetime
 import threading
 import time
+from settings import CPU_THRESHOLD ,SUSPEND_AFTER_DRAIN
 
 def time_now():
     return datetime.now().strftime("%H:%M:%S")
@@ -93,14 +109,14 @@ class Drainy:
                 node_name = stats['metadata']['name']
                 core_num = self.node_cpu_capacity(node_name)
                 cpu_usage = float(stats['usage']['cpu'][:-1]) / (1000000000.0 * core_num) * 100
-                if cpu_usage > 80:
+                if cpu_usage > CPU_THRESHOLD:
                     print("{} {} cpu usage is way too high!".format(time_now(), node_name))
                     if not self.is_drained(node_name):
                         # will only drain a node if it has not been drained
                         self.drained[node_name] = True
                         # After 10min(600 sec), remove node_name from self.drained dict
                         # This can avoid frequent drain to one particular node in 10 mins
-                        t = threading.Thread(target=self.ttl_key_remove, args=(node_name, 600))
+                        t = threading.Thread(target=self.ttl_key_remove, args=(node_name, SUSPEND_AFTER_DRAIN))
                         t.start()
                         self.drain_node(node_name)
 
