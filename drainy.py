@@ -54,14 +54,14 @@ class Drainy:
 
     def drain_node(self, node_name):
         try:
-            self.cordon_node(self.session, node_name)
+            self.cordon_node(node_name)
             # field selectors are a string, you need to parse the fields from the pods here
             field_selector = 'spec.nodeName='+node_name
             pods = self.session.list_pod_for_all_namespaces(watch=False, field_selector=field_selector)
             for i in pods.items:
                 print("Going to delete pod %s\t%s\t%s" %
                     (i.status.pod_ip, i.metadata.namespace, i.metadata.name))
-                self.delete_pod(self.session, name=i.metadata.name, namespace=i.metadata.namespace)
+                self.delete_pod(name=i.metadata.name, namespace=i.metadata.namespace)
             print("{} has been drained!".format(node_name))
         except Exception as e:
             print("Exception: Drainy:drain_node {}".format(e))       
