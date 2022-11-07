@@ -19,6 +19,8 @@ spec:
         app: drainy
     spec:
       serviceAccountName: drainy-sa
+      nodeSelector:
+        dedicated: master
       containers:
       - image: yunshengyan/drainy:0.91
         imagePullPolicy: IfNotPresent
