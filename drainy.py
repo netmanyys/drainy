@@ -65,7 +65,7 @@ class Drainy:
             field_selector = 'spec.nodeName='+node_name
             pods = self.session.list_pod_for_all_namespaces(watch=False, field_selector=field_selector)
             for i in pods.items:
-                print("{}: Going to delete pod {}\t{}\t{}".format(time_now(), i.status.pod_ip, i.metadata.namespace, i.metadata.name))
+                print("{} Going to delete pod {}\t{}\t{}".format(time_now(), i.status.pod_ip, i.metadata.namespace, i.metadata.name))
                 self.delete_pod(name=i.metadata.name, namespace=i.metadata.namespace)
             print("{} {} has been drained!".format(time_now(), node_name))
         except Exception as e:
